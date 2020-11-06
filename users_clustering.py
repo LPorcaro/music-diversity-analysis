@@ -21,7 +21,7 @@ from kripp_juan import alpha as k_alpha
 INPUT_FEED = "data/TV/TrackVarietyAnswersB.csv"
 # INPUT_FEED = "data/AD/ArtistDiversityAnswersB.csv"
 # INPUT_FEED = "data/MIX/MixedAnswersB.csv"
-INPUT_USERS = "data/Users/Users_20201013.csv"
+INPUT_USERS = "data/Users/Users_20201029.csv"
 VALUES_DOMAIN = ["List A", "List B", "I don't know"]    
 
 MIX_FLAG = False
@@ -255,20 +255,17 @@ if __name__ == '__main__':
 
     users_groups = []
     # Create Pre-defined users group
-    users_groups = create_users_group(df_users)
+    # users_groups = create_users_group(df_users)
 
     # SILHOUETTE ANALYSIS
     # n_clusters = SilhouetteAnalysis(DistMatrix)
-    n_clusters = 2
+    n_clusters = 3
 
-    clusterer = KMedoids(n_clusters=n_clusters,
-                         metric="precomputed",
-                         random_state=0)
-    clusterer.fit_transform(DistMatrix)
-
-
-
-
+    # GOWER DISTANCE
+    # clusterer = KMedoids(n_clusters=n_clusters,
+    #                      metric="precomputed",
+    #                      random_state=0)
+    # clusterer.fit_transform(DistMatrix)
     # # Plot TSNE 
     # model = TSNE(n_components=2, 
     #             metric="precomputed",
@@ -278,10 +275,34 @@ if __name__ == '__main__':
     # plt.show()
 
 
-    for n_c in np.arange(0, n_clusters):
-        # df_users.iloc[np.where(clusterer.labels_==n_c)].describe(include='all').to_csv("data/Users/user_cluster_{}.csv".format(n_c))
-        group = np.where(clusterer.labels_==n_c)[0]
-        users_groups.append(group)
+    # EUCLIDEAN DISTANCE
+    clusterer = KMedoids(n_clusters=n_clusters,
+                         metric="euclidean",
+                         random_state=0)
+    clusterer.fit_transform(df_users)
+
+
+    # Plot TSNE 
+    model = TSNE(n_components=2, 
+                metric="euclidean",
+                random_state=0)
+    Y = model.fit_transform(df_users)
+    
+    fig, ax = plt.subplots()
+    scatter = ax.scatter(Y[:, 0], Y[:, 1], c=clusterer.labels_, cmap=plt.cm.rainbow, label=clusterer.labels_, s=50)
+    handles, labels = scatter.legend_elements()
+    legend1 = ax.legend(handles,["Medium Soph", "Low Soph", "High Soph"],
+                        loc="lower left", title="Classes",  prop={'size': 20})
+    ax.add_artist(legend1)
+    plt.show()
+
+
+    # for n_c in np.arange(0, n_clusters):
+    #     print(n_c)
+    #     print(df_users.iloc[np.where(clusterer.labels_==n_c)].describe(include='all'))
+    #     df_users.iloc[np.where(clusterer.labels_==n_c)].describe(include='all').to_csv("data/Users/user_cluster_20201029_{}.csv".format(n_c))
+    #     group = np.where(clusterer.labels_==n_c)[0]
+    #     users_groups.append(group)
     
 
     
@@ -303,11 +324,11 @@ if __name__ == '__main__':
     #     compute_alpha(combo)
 
 
-    # METRIC-RATER AGREEMENT
-    metric_values = []
-    for group in users_groups:
-        compute_cohen_metric(group, metric_values, MIX_FLAG)
+    # # METRIC-RATER AGREEMENT
+    # metric_values = []
+    # for group in users_groups:
+    #     compute_cohen_metric(group, metric_values, MIX_FLAG)
 
-    compute_cohen_metric(df_users.index.to_list(), metric_values, MIX_FLAG)
+    # compute_cohen_metric(df_users.index.to_list(), metric_values, MIX_FLAG)
     
 
