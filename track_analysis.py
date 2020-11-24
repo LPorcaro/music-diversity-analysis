@@ -7,8 +7,9 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 
-from sklearn.metrics.pairwise import cosine_similarity
-from scipy.spatial.distance import cosine
+from itertools import combinations
+from scipy.optimize import curve_fit
+from scipy.spatial.distance import cosine, cityblock, euclidean
 from scipy import stats
 from matplotlib import cm
 
@@ -68,10 +69,13 @@ LOW_LEVEL = ["silence_rate_30dB", "silence_rate_60dB",
 
 TONAL = ["hpcp_crest", "hpcp_entropy"]
 
-
 IN_FOLDER = "/home/lorenzo/Data/divsurvey/essentia_extractor_music/TV"
 
-    
+def gaussian(x, mean, amplitude, standard_deviation):
+    return amplitude * np.exp( - ((x - mean) / standard_deviation) ** 2)
+
+
+ 
 if __name__ == '__main__':
 
     # Extract Features
@@ -136,16 +140,49 @@ if __name__ == '__main__':
 
         # Distance Matrix
         X = np.zeros((len(tracks_feat), len(tracks_feat)))
+        distances = []
         for c1,t1 in enumerate(tracks_feat):
             for c2,t2 in enumerate(tracks_feat):
-                    X[c1,c2] = cosine(t1,t2)
+                if c2 > c1:
+                    dist = cosine(t1,t2)
+                    X[c1,c2] = X[c2,c1] = dist
+                    distances.append(dist)
 
-        # out = 1 - cosine_similarity(tracks_feat)
         out = X
 
-        min_v = out[np.where(out>0)].min()
-        max_v = out[np.where(out>0)].max()
-        print(min_v, max_v, np.where(out==min_v), np.where(out==max_v))
+        # ### Normality test ###
+        stat, p = stats.shapiro(distances)
+        print('Statistics={}, p={}'.format(stat, p))
+        
+
+        bin_heights, bin_borders, _ = plt.hist(distances, bins='auto', label='histogram')
+        bin_centers = bin_borders[:-1] + np.diff(bin_borders) / 2
+        popt, _ = curve_fit(gaussian, bin_centers, bin_heights, p0=[1., 0., 1.])
+        
+        x_interval_for_fit = np.linspace(bin_borders[0], bin_borders[-1], 10000)
+        plt.plot(x_interval_for_fit, gaussian(x_interval_for_fit, *popt), label='fit')
+        plt.legend()
+        plt.show()
+
+
+        ### Wilcoxon signed-rank test ### 
+        dist_groups = []
+        c = 0
+        while c<32:
+            T = np.triu(out[c:c+4, c:c+4])
+            dist_groups.append(T[T>0])
+            c+=4
+
+        print(stats.wilcoxon(dist_groups[0], dist_groups[1]))
+        print(stats.wilcoxon(dist_groups[2], dist_groups[3]))
+        print(stats.wilcoxon(dist_groups[4], dist_groups[5]))
+        print(stats.wilcoxon(dist_groups[6], dist_groups[7]))
+
+
+        # ### Max and Min distances ###
+        # min_v = out[np.where(out>0)].min()
+        # max_v = out[np.where(out>0)].max()
+        # print(min_v, max_v, np.where(out==min_v), np.where(out==max_v))
 
         # # Save Matrix and Plot it
         # np.savetxt("data/TV/TVFeatLow_CS_out_20201103.csv", out, delimiter=',', fmt='%.4f')
@@ -172,6 +209,6 @@ if __name__ == '__main__':
         #         for j in range(T.shape[1]):
         #             if j>i:
         #                 v.append(T[i,j])
-        #     print("hmean:", stats.hmean(v))
+        #     print("gmean:", stats.mstats.gmean(v))
         #     print()
         #     c+=4

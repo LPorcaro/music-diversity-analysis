@@ -15,13 +15,20 @@ from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_samples, silhouette_score
 from sklearn_extra.cluster import KMedoids
 from sklearn.metrics import cohen_kappa_score
+from sklearn.decomposition import PCA
+from sklearn.ensemble import IsolationForest
+from sklearn.cluster import AgglomerativeClustering
+from numpy.linalg import norm
 
 from kripp_juan import alpha as k_alpha 
 
-INPUT_FEED = "data/TV/TrackVarietyAnswersB.csv"
-# INPUT_FEED = "data/AD/ArtistDiversityAnswersB.csv"
+# INPUT_FEED = "data/TV/TrackVarietyAnswersB.csv"
+INPUT_FEED = "data/AD/ArtistDiversityAnswersB.csv"
 # INPUT_FEED = "data/MIX/MixedAnswersB.csv"
-INPUT_USERS = "data/Users/Users_20201029.csv"
+
+INPUT_USERS = "data/Users/Users_soph_fam_20201029.csv"
+# INPUT_USERS = "data/Users/Users_Factors_20201117.csv"
+
 VALUES_DOMAIN = ["List A", "List B", "I don't know"]    
 
 MIX_FLAG = False
@@ -39,13 +46,14 @@ def SilhouetteAnalysis(X):
     """
     range_n_clusters = np.arange(2,20)
     silhouette_avgs = []
+
     for n_clusters in range_n_clusters:
 
         # Initialize the clusterer with n_clusters value and a random generator
         # seed of 10 for reproducibility.
         clusterer = KMedoids(n_clusters=n_clusters,
-                             metric="precomputed",
-                             random_state=0)
+                             metric="euclidean",
+                             random_state=rng)
         # clusterer = KMeans(n_clusters=n_clusters, random_state=10)
         cluster_labels = clusterer.fit_predict(X)
 
@@ -80,35 +88,35 @@ def compute_alpha(participant_ids):
 def compute_cohen(participant_ids):
     """
     """
-    print(len(participant_ids))
-    # df_feedbacknew = df_feedback.replace(['List B'],1).replace(['List A'],2).replace(["I don't know"],0)
-    df_feedbacknew = df_feedback
-
     k_tot = []
     for co in combinations(participant_ids, 2):
-        k = cohen_kappa_score(df_feedbacknew.iloc[co[0]], df_feedbacknew.iloc[co[1]])
+        k = cohen_kappa_score(df_feedback.iloc[co[0]], df_feedback.iloc[co[1]])
         if math.isnan(k):
             k=1
         k_tot.append(k)
 
     c_k = np.mean(k_tot)
 
-    # print(c_k)
+    print(c_k)
+    # print(len(Participantsicipant_ids), c_k)
     return c_k
 
-def compute_cohen_metric(participant_ids, metric_values, mix):
+def compute_cohen_metric(participant_ids, mix):
     """
     """
-    df_feedbacknew = df_feedback.replace(['List A'],1).replace(['List B'],2).replace(["I don't know"],0)
+    df_feedbacknew = df_feedback.replace(
+                        ['List A'],1).replace(
+                            ['List B'],2).replace(
+                                ["I don't know"],0)
 
     k_tot = []
-
 
     for c in participant_ids:
         if mix:
             metric_values = MVALUES_MIX[df_users.iloc[c]['MIX2']-1]
-
-        metric_values = MVALUES_TV[2:]
+        else:
+            metric_values = MVALUES_AD[2:]
+            
         k = cohen_kappa_score(df_feedbacknew.iloc[c], metric_values)
         if math.isnan(k):
             k=1
@@ -119,216 +127,172 @@ def compute_cohen_metric(participant_ids, metric_values, mix):
     print(c_k)
     return c_k
 
-def create_users_group(df_users):
+def create_users_groups(df):
     """
     """
-    # 1 - Participants Musical Education = Yes
-    users_ME_True = list(df_users.loc[
-                            df_users["MusicalEducation"]=="Yes"][
-                                "MusicalEducation"].to_dict().keys())
-    users_groups.append(users_ME_True)
+    FormalActivePlayers = df[(df["MusicalEducation"]=="Yes") & (df["PlayiningTime"]>=4)]
+    users_groups.append(FormalActivePlayers.index.to_list())
 
-    # 2 - Participants Musical Education = No
-    users_ME_False = list(df_users.loc[
-                            df_users["MusicalEducation"]=="No"][
-                                "MusicalEducation"].to_dict().keys())
-    users_groups.append(users_ME_False)
-    
+    FormalUnactivePlayers = df[(df["MusicalEducation"]=="Yes") & (df["PlayiningTime"]<4)]
+    users_groups.append(FormalUnactivePlayers.index.to_list())
 
-    # 3 - Participants Playing Time >4
-    users_PT_1 = list(df_users.loc[
-                            df_users["PlayiningTime"]>3][
-                                "PlayiningTime"].to_dict().keys())
-    users_groups.append(users_PT_1)
+    InformalActivePlayers = df[(df["MusicalEducation"]=="No") & (df["PlayiningTime"]>=4)]
+    users_groups.append(InformalActivePlayers.index.to_list())
 
-    # 4 - Participants Playing Time <4
-    users_PT_2 = list(df_users.loc[
-                            df_users["PlayiningTime"]<=3][
-                                "PlayiningTime"].to_dict().keys())
-    users_groups.append(users_PT_2)
-
-    # 5 - Participants Taste Variety == 5
-    users_TV_1 = list(df_users.loc[
-                            df_users["TasteVariety"]>4][
-                                "TasteVariety"].to_dict().keys())
-    users_groups.append(users_TV_1)
-
-    # 6- Participants Taste Variety < 5
-    users_TV_1 = list(df_users.loc[
-                            df_users["TasteVariety"]<=4][
-                                "TasteVariety"].to_dict().keys())
-    users_groups.append(users_TV_1)
-
-    # 7 - Participants ElectronicMusic == 5
-    users_TV_1 = list(df_users.loc[
-                            df_users["ElectronicMusic"]==5][
-                                "ElectronicMusic"].to_dict().keys())
-    users_groups.append(users_TV_1)
-
-    # 8- Participants ElectronicMusic < 5
-    users_TV_1 = list(df_users.loc[
-                            df_users["ElectronicMusic"]<5][
-                                "ElectronicMusic"].to_dict().keys())
-    users_groups.append(users_TV_1)
-
-    # 9 - Participants ElectronicTasteVariety >4
-    users_PT_1 = list(df_users.loc[
-                            df_users["ElectronicTasteVariety"]>4][
-                                "ElectronicTasteVariety"].to_dict().keys())
-    users_groups.append(users_PT_1)
-
-    # 10 - Participants ElectronicTasteVariety <4
-    users_PT_2 = list(df_users.loc[
-                            df_users["ElectronicTasteVariety"]<=4][
-                                "ElectronicTasteVariety"].to_dict().keys())
-    users_groups.append(users_PT_2)
-
-
-    mean_main = df_users["ScoreMainstream"].mean()
-
-    # 11 - Participants ScoreMainstream >= median_sur
-    users_SM_1 = list(df_users.loc[
-                            df_users["ScoreMainstream"]>mean_main][
-                                "ScoreMainstream"].to_dict().keys())
-    users_groups.append(users_SM_1)
-
-    # 12 - Participants ElectronicTasteVariety < median_sur
-    users_SM_2 = list(df_users.loc[
-                            df_users["ScoreMainstream"]<=mean_main][
-                                "ScoreMainstream"].to_dict().keys())
-    users_groups.append(users_SM_2)
-
-    mean_sur = df_users["ScoreSurvey"].mean()
-
-    # 13 - Participants ScoreSurvey >= median_sur
-    users_SS_1 = list(df_users.loc[
-                            df_users["ScoreSurvey"]>mean_sur][
-                                "ScoreSurvey"].to_dict().keys())
-    users_groups.append(users_SS_1)
-
-    # 14 - Participants ScoreSurvey < median_sur
-    users_SS_2 = list(df_users.loc[
-                            df_users["ScoreSurvey"]<=mean_sur][
-                                "ScoreSurvey"].to_dict().keys())
-    users_groups.append(users_SS_2)    
+    InformalUnactivePlayers = df[(df["MusicalEducation"]=="No") & (df["PlayiningTime"]<=4)]
+    users_groups.append(InformalUnactivePlayers.index.to_list())
 
 
     # Demographical Clusters
     WEIRD1 = df[(df["Gender"]=="Male") &
                    ((df["Origin"]=="Europe") | (df["Origin"]=="North America") | (df["Origin"]=="Oceania")) &
-                   (df["Instruction"] != "High school degree or equivalent") & 
+                   ((df["Instruction"] != "High school degree or equivalent") | (df["Instruction"] != "Less than a high school diploma")) & 
                    (df["SkinType"].isin(["1","2"]))]
 
     users_groups.append(WEIRD1.index.to_list())
     
 
     WEIRD2 = df[((df["Origin"]=="Europe") | (df["Origin"]=="North America") | (df["Origin"]=="Oceania")) &
-                   (df["Instruction"] != "High school degree or equivalent") & 
+                   ((df["Instruction"] != "High school degree or equivalent") | (df["Instruction"] != "Less than a high school diploma")) & 
                    (df["SkinType"].isin(["1","2"]))]
 
     users_groups.append(WEIRD2.index.to_list())
     
 
     WEIRD3 = df[((df["Origin"]=="Europe") | (df["Origin"]=="North America") | (df["Origin"]=="Oceania")) &
-                   (df["Instruction"] != "High school degree or equivalent")]
+                   ((df["Instruction"] != "High school degree or equivalent") | (df["Instruction"] != "Less than a high school diploma"))]
 
     users_groups.append(WEIRD3.index.to_list())
     
 
     YOUNG = df[df["Age"].isin(["18-24 years old","25-34 years old"])]
-    OLD = df[~df.isin(YOUNG)].dropna()
     users_groups.append(YOUNG.index.to_list())
+
+    OLD = df[~df.isin(YOUNG)].dropna()
     users_groups.append(OLD.index.to_list())
 
     return users_groups
     
+def cluster_points(X):
+    """
+    """
+    # n_clusters = SilhouetteAnalysis(df_users) # SILHOUETTE ANALYSIS
+
+    clusterer = KMedoids(n_clusters=n_clusters,
+                         metric=metric,
+                         random_state=rng)
+    clusterer.fit_transform(X)
+
+    c1, c2, c3 = clusterer.medoid_indices_
+
+    # Remove outliers
+    c1_dist = [norm(X.iloc[c1]-X.iloc[x]) for x in np.setdiff1d(np.where(clusterer.labels_ == 0)[0], [c1])] 
+    c2_dist = [norm(X.iloc[c2]-X.iloc[x]) for x in np.setdiff1d(np.where(clusterer.labels_ == 1)[0], [c2])] 
+    c3_dist = [norm(X.iloc[c3]-X.iloc[x]) for x in np.setdiff1d(np.where(clusterer.labels_ == 2)[0], [c3])] 
+
+    c1_avg = np.mean(c1_dist)
+    c2_avg = np.mean(c2_dist)
+    c3_avg = np.mean(c3_dist)
+    c1_std = np.std(c1_dist)
+    c2_std = np.std(c2_dist)
+    c3_std = np.std(c3_dist)
+
+    outliers = []
+    for c, el in enumerate(clusterer.labels_):
+        if el == 0:
+            if norm(X.iloc[c1]-X.iloc[c]) > c1_avg + c1_std:
+                outliers.append(c)
+        elif el == 1:
+            if norm(X.iloc[c2]-X.iloc[c]) > c2_avg + c2_std:
+                outliers.append(c)
+        elif el == 2:
+            if norm(X.iloc[c3]-X.iloc[c]) > c3_avg + c3_std:
+                outliers.append(c)
+
+    X_new = X.drop(outliers)
+
+    clusterer_new = KMedoids(n_clusters=n_clusters,
+                             metric=metric,
+                             random_state=rng)
+    clusterer_new.fit_transform(X_new)
+
+    # plot_clusters(X, X_new, clusterer, clusterer_new)
+
+    return clusterer_new
+
+def plot_clusters(X, X_new, clusterer, clusterer_new):
+    """
+    """
+    fig, axs = plt.subplots(2, 2)
+    ### Plot TSNE ###
+    tsne = TSNE(n_components=2, 
+                metric=metric,
+                random_state=rng)
+
+    Y = tsne.fit_transform(X)
+    scatter = axs[0,0].scatter(Y[:, 0], Y[:, 1], c=clusterer.labels_, cmap=plt.cm.rainbow, label=clusterer.labels_, s=50)
+    # handles, labels = scatter.legend_elements()
+    # legend1 = ax1.legend(handles,["Medium Soph", "Low Soph", "High Soph"], loc="lower left", title="Classes",  prop={'size': 20})
+    # ax1.add_artist(legend1)
+
+    ### Plot PCA ###
+    pca = PCA(n_components=2)
+    Y2 = pca.fit_transform(X)
+    scatter2 = axs[0,1].scatter(Y2[:, 0], Y2[:, 1], c=clusterer.labels_, cmap=plt.cm.rainbow, label=clusterer.labels_, s=50)
+    # legend1 = ax2.legend(handles,["Medium Soph", "Low Soph", "High Soph"], loc="lower left", title="Classes",  prop={'size': 20})
+    # ax2.add_artist(legend1)
+
+
+    Y3 = tsne.fit_transform(X_new)
+    scatter3 = axs[1,0].scatter(Y3[:, 0], Y3[:, 1], c=clusterer_new.labels_, cmap=plt.cm.rainbow, label=clusterer_new.labels_, s=50)
+    # handles, labels = scatter.legend_elements()
+    # legend1 = ax1.legend(handles,["Medium Soph", "Low Soph", "High Soph"], loc="lower left", title="Classes",  prop={'size': 20})
+    # ax1.add_artist(legend1)
+
+
+    ### Plot PCA ###
+    pca = PCA(n_components=2)
+    Y4 = pca.fit_transform(X_new)
+    scatter4 = axs[1,1].scatter(Y4[:, 0], Y4[:, 1], c=clusterer_new.labels_, cmap=plt.cm.rainbow, label=clusterer_new.labels_, s=50)
+    # legend1 = ax2.legend(handles,["Medium Soph", "Low Soph", "High Soph"], loc="lower left", title="Classes",  prop={'size': 20})
+    # ax2.add_artist(legend1)
+    plt.show()
+
 
 if __name__ == '__main__':
 
     # Import Data 
-    df = pd.read_csv("data/Users/Users_dem_20201014.csv")
-    df_users = pd.read_csv(INPUT_USERS)
+    df_users = pd.read_csv("data/Users/Users_dem_20201118.csv")
+    df_users_clust = pd.read_csv(INPUT_USERS)
     df_feedback = pd.read_csv(INPUT_FEED)
-
-    # Compute Distance Matrix
-    DistMatrix = gower.gower_matrix(df_users)
 
     users_groups = []
     # Create Pre-defined users group
-    # users_groups = create_users_group(df_users)
+    users_groups = create_users_groups(df_users)
 
-    # SILHOUETTE ANALYSIS
-    # n_clusters = SilhouetteAnalysis(DistMatrix)
+    rng = np.random.RandomState(42)
+    metric = "euclidean"
     n_clusters = 3
+    clusterer = cluster_points(df_users_clust)
 
-    # GOWER DISTANCE
-    # clusterer = KMedoids(n_clusters=n_clusters,
-    #                      metric="precomputed",
-    #                      random_state=0)
-    # clusterer.fit_transform(DistMatrix)
-    # # Plot TSNE 
-    # model = TSNE(n_components=2, 
-    #             metric="precomputed",
-    #             random_state=0)
-    # Y = model.fit_transform(DistMatrix)
-    # plt.scatter(Y[:, 0], Y[:, 1], c=clusterer.labels_, cmap=plt.cm.Spectral)
-    # plt.show()
+    for n_c in np.arange(0, n_clusters):
+        # print(n_c)
+        # print(df_users_clust.iloc[np.where(clusterer.labels_==n_c)].describe(include='all'))
+        # df_users_clust.iloc[np.where(clusterer.labels_==n_c)].describe(include='all').to_csv("data/Users/user_cluster_20201029_{}.csv".format(n_c))
+        group = np.where(clusterer.labels_ == n_c)[0]
+        users_groups.append(group)
 
-
-    # EUCLIDEAN DISTANCE
-    clusterer = KMedoids(n_clusters=n_clusters,
-                         metric="euclidean",
-                         random_state=0)
-    clusterer.fit_transform(df_users)
-
-
-    # Plot TSNE 
-    model = TSNE(n_components=2, 
-                metric="euclidean",
-                random_state=0)
-    Y = model.fit_transform(df_users)
-    
-    fig, ax = plt.subplots()
-    scatter = ax.scatter(Y[:, 0], Y[:, 1], c=clusterer.labels_, cmap=plt.cm.rainbow, label=clusterer.labels_, s=50)
-    handles, labels = scatter.legend_elements()
-    legend1 = ax.legend(handles,["Medium Soph", "Low Soph", "High Soph"],
-                        loc="lower left", title="Classes",  prop={'size': 20})
-    ax.add_artist(legend1)
-    plt.show()
-
-
-    # for n_c in np.arange(0, n_clusters):
-    #     print(n_c)
-    #     print(df_users.iloc[np.where(clusterer.labels_==n_c)].describe(include='all'))
-    #     df_users.iloc[np.where(clusterer.labels_==n_c)].describe(include='all').to_csv("data/Users/user_cluster_20201029_{}.csv".format(n_c))
-    #     group = np.where(clusterer.labels_==n_c)[0]
-    #     users_groups.append(group)
-    
 
     
-    # INTER-RATER AGREEMENT
-    # Group Agreement
-    # print("Group Agreement")
-    
+    # ### INTER-RATER AGREEMENT ###
     # for group in users_groups:
     #     compute_cohen(group)
-    
-    # # Overall Agreement
-    # # print("Overall Agreement")
-    # compute_cohen(list(df_users['MusicalEducation'].to_dict().keys()))
-
-    # # Agreement among combinations of 2 groups
-    # print()
-    # for group in combinations(users_groups,2):
-    #     combo = list(set(group[0]) & set(group[1]))
-    #     compute_alpha(combo)
+    # compute_cohen(df_users.index.to_list())
 
 
-    # # METRIC-RATER AGREEMENT
-    # metric_values = []
-    # for group in users_groups:
-    #     compute_cohen_metric(group, metric_values, MIX_FLAG)
-
-    # compute_cohen_metric(df_users.index.to_list(), metric_values, MIX_FLAG)
+    ### METRIC-RATER AGREEMENT ###
+    for group in users_groups:
+        compute_cohen_metric(group, MIX_FLAG)
+    compute_cohen_metric(df_users.index.to_list(), MIX_FLAG)
     
 

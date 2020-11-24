@@ -10,10 +10,11 @@ from mpl_toolkits.mplot3d import Axes3D
 
 
 
-INPUT_FILE = "data/Users/Users_20201029.csv"
+INPUT_FILE = "data/Users/Users_20201106.csv"
 
 G1 = ["PlayiningTime", "TasteVariety", "ElectronicMusic", "ElectronicTasteVariety"]
-G2 = ["ScoreMainstream", "ScoreSurvey", "MeanScore", "SocialScore"]
+# G2 = ["ScoreMainstream", "ScoreSurvey", "MeanScore", "SocialScore", "GAPScore"]
+G2 = ["GAPScore"]
 
 if __name__ == '__main__':
 

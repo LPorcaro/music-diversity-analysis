@@ -20,9 +20,9 @@ maybe = ["Maybe I know them/her/him",
 
 if __name__ == '__main__':
 
-    scores = "data/Fam/FamiliarityScore_20201020.csv"
+    scores = "data/Fam/FamiliarityScore_20201102.csv"
     infile = "data/Fam/FamiliaritySurvey_20201028.csv"
-    outfile = "data/Fam/FamiliaritySurvey_20201028_out.csv"
+    outfile = "data/Fam/FamiliaritySurvey_20201102_out.csv"
 
     df_score = pd.read_csv(scores)
     df_res = pd.read_csv(infile)

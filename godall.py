@@ -59,37 +59,59 @@ if __name__ == '__main__':
                     if DictPropAttr2[attr][x] <= DictPropAttr2[attr][val]])
 
     # Create Similarity/Distance Matrix
-    SimMatrix = np.zeros((N, N))
+    out = np.zeros((N, N))
+    distances = []
     for c in combinations(range(N), 2):
         s = 0
         for attr in DictSimAttr:
             if df.iloc[c[0]][attr] == df.iloc[c[1]][attr]:
                 s += (1 / df.shape[1]) * DictSimAttr[attr][df.iloc[c[0]][attr]]
-        SimMatrix[c[0], c[1]] = SimMatrix[c[1], c[0]] = 1 - s
+        distances.append(1 - s)
+        out[c[0], c[1]] = out[c[1], c[0]] = 1 - s
 
+
+    # ### Normality test ###
+    stat, p = stats.shapiro(distances)
+    print('Statistics={}, p={}'.format(stat, p))
+
+    ### Wilcoxon signed-rank test ### 
+    dist_groups = []
+    c = 0
+    while c<32:
+        T = np.triu(out[c:c+4, c:c+4])
+        dist_groups.append(T[T>0])
+        c+=4
+    print(stats.wilcoxon(dist_groups[0], dist_groups[1]))
+    print(stats.wilcoxon(dist_groups[2], dist_groups[3]))
+    print(stats.wilcoxon(dist_groups[4], dist_groups[5]))
+    print(stats.wilcoxon(dist_groups[6], dist_groups[7]))
+
+    
     # Find min and max values
-    min_v = SimMatrix[np.where(SimMatrix > 0)].min()
-    max_v = SimMatrix[np.where(SimMatrix > 0)].max()
-    min_i = np.where(SimMatrix == min_v)
-    max_i = np.where(SimMatrix == max_v)
+    min_v = out[np.where(out > 0)].min()
+    max_v = out[np.where(out > 0)].max()
+    min_i = np.where(out == min_v)
+    max_i = np.where(out == max_v)
     # print(min_v, max_v, min_i, max_i)
 
     # Save Matrix and Plot it
-    np.savetxt("data/AD/AD_Goodal1_out_20201105.csv",
-               SimMatrix, delimiter=',', fmt='%.4f')
+    np.savetxt("data/AD/AD_Goodal1_out_20201118.csv",
+               out, delimiter=',', fmt='%.4f')
     figure = plt.figure()
     axes = figure.add_subplot(111)
-    caxes = axes.matshow(SimMatrix, interpolation='nearest',
+    caxes = axes.matshow(out, interpolation='nearest',
                          cmap=cm.Spectral_r)
     figure.colorbar(caxes)
     plt.show()
 
-    # Compute Stats for Group
+    # Compute Stats for groups
+    print("\nCompute Stats for groups")
     c = 0
     while c < 32:
-        T = np.triu(SimMatrix[c:c+4, c:c+4])
+        T = np.triu(out[c:c+4, c:c+4])
         st = stats.describe(T[T > 0.000000001])
-        print("min-max:", st[1])
+        d_min, d_max = st[1]
+        print("min:", d_min)
         print("avg:", st[2])
 
         v = []
@@ -97,6 +119,6 @@ if __name__ == '__main__':
             for j in range(T.shape[1]):
                 if j > i:
                     v.append(T[i, j])
-        print("hmean:", stats.hmean(v))
+        print("gmean:", stats.mstats.gmean(v))
         print()
         c += 4
