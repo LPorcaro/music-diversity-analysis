@@ -8,6 +8,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import math
+import random
 
 from itertools import combinations
 from sklearn.manifold import TSNE
@@ -19,12 +20,16 @@ from sklearn.decomposition import PCA
 from sklearn.ensemble import IsolationForest
 from sklearn.cluster import AgglomerativeClustering
 from numpy.linalg import norm
+from statsmodels.stats.inter_rater import fleiss_kappa
+from tqdm import tqdm
 
 from kripp_juan import alpha as k_alpha 
 
+# INPUT_FEED = "data/Users/Users_TVFactors_20201126.csv"
+
 # INPUT_FEED = "data/TV/TrackVarietyAnswersB.csv"
-INPUT_FEED = "data/AD/ArtistDiversityAnswersB.csv"
-# INPUT_FEED = "data/MIX/MixedAnswersB.csv"
+# INPUT_FEED = "data/AD/ArtistDiversityAnswersB.csv"
+INPUT_FEED = "data/MIX/MixedAnswersB.csv"
 
 INPUT_USERS = "data/Users/Users_soph_fam_20201029.csv"
 # INPUT_USERS = "data/Users/Users_Factors_20201117.csv"
@@ -85,19 +90,34 @@ def compute_alpha(participant_ids):
     print(k_a)#, len(participant_ids))
     return k_a
 
+def compute_ci(kappa, group):
+    """
+    """
+    resample = 100
+
+    kappas = []
+    for i in range(resample):
+        ids_resampled = np.array(random.choices(group, k=len(group)))
+        kappas.append(compute_cohen(ids_resampled))
+
+    margin = 1.96*np.std(kappas)/np.sqrt(len(group))
+    print("{:.2f} [{:.2f},{:.2f}]".format(kappa,kappa-margin,kappa+margin))
+
+
 def compute_cohen(participant_ids):
     """
     """
     k_tot = []
     for co in combinations(participant_ids, 2):
-        k = cohen_kappa_score(df_feedback.iloc[co[0]], df_feedback.iloc[co[1]])
+        k = cohen_kappa_score(df_feedback.iloc[co[0]], 
+                              df_feedback.iloc[co[1]])
         if math.isnan(k):
             k=1
         k_tot.append(k)
 
     c_k = np.mean(k_tot)
 
-    print(c_k)
+    # print(c_k)
     # print(len(Participantsicipant_ids), c_k)
     return c_k
 
@@ -115,7 +135,7 @@ def compute_cohen_metric(participant_ids, mix):
         if mix:
             metric_values = MVALUES_MIX[df_users.iloc[c]['MIX2']-1]
         else:
-            metric_values = MVALUES_AD[2:]
+            metric_values = MVALUES_TV[2:]
             
         k = cohen_kappa_score(df_feedbacknew.iloc[c], metric_values)
         if math.isnan(k):
@@ -127,21 +147,55 @@ def compute_cohen_metric(participant_ids, mix):
     print(c_k)
     return c_k
 
+def compute_fleiss(participant_ids):
+    """
+    """
+    tasks = ['TV1','TV2','TV3','TV4']
+    # tasks = ['AD1','AD2','AD3','AD4']
+    # tasks = ['MIX1', 'MIX2', 'MIX3','MIX4']
+    rates = ['List A', 'List B', "I don't know"]
+
+
+    df_feedback_f = df_feedback.iloc[participant_ids]
+
+    t_full = []
+    t1 = []
+    t2 = []
+    for tk in tasks:
+        if tk == tasks[0] or tk == tasks[1]:
+            c_rts = []
+            for rt in rates:
+                try:
+                    c_rt = df_feedback_f[tk].value_counts()[rt]
+                except KeyError:
+                    c_rt = 0
+                c_rts.append(c_rt)
+            t_full.append(c_rts)
+            t1.append(c_rts)
+        elif tk == tasks[2] or tk == tasks[3]:
+            c_rts = []
+            for rt in rates:
+                try:
+                    c_rt = df_feedback_f[tk].value_counts()[rt]
+                except KeyError:
+                    c_rt = 0
+                c_rts.append(c_rt)
+            t_full.append(c_rts)
+            t2.append(c_rts)
+
+    # print(t_full)
+    # print(t1)
+    # print(t2)
+    print(fleiss_kappa(t_full),fleiss_kappa(t1),fleiss_kappa(t2))
+
 def create_users_groups(df):
     """
     """
-    FormalActivePlayers = df[(df["MusicalEducation"]=="Yes") & (df["PlayiningTime"]>=4)]
-    users_groups.append(FormalActivePlayers.index.to_list())
+    G1 = df[df["MIXChoice"]=="Now"]
+    users_groups.append(G1.index.to_list())    
 
-    FormalUnactivePlayers = df[(df["MusicalEducation"]=="Yes") & (df["PlayiningTime"]<4)]
-    users_groups.append(FormalUnactivePlayers.index.to_list())
-
-    InformalActivePlayers = df[(df["MusicalEducation"]=="No") & (df["PlayiningTime"]>=4)]
-    users_groups.append(InformalActivePlayers.index.to_list())
-
-    InformalUnactivePlayers = df[(df["MusicalEducation"]=="No") & (df["PlayiningTime"]<=4)]
-    users_groups.append(InformalUnactivePlayers.index.to_list())
-
+    G2 = df[df["MIXChoice"]=="Previous"]
+    users_groups.append(G2.index.to_list())    
 
     # Demographical Clusters
     WEIRD1 = df[(df["Gender"]=="Male") &
@@ -267,8 +321,6 @@ if __name__ == '__main__':
     df_feedback = pd.read_csv(INPUT_FEED)
 
     users_groups = []
-    # Create Pre-defined users group
-    users_groups = create_users_groups(df_users)
 
     rng = np.random.RandomState(42)
     metric = "euclidean"
@@ -283,16 +335,22 @@ if __name__ == '__main__':
         users_groups.append(group)
 
 
+    # Create Pre-defined users group
+    users_groups = create_users_groups(df_users)
+
     
-    # ### INTER-RATER AGREEMENT ###
-    # for group in users_groups:
-    #     compute_cohen(group)
-    # compute_cohen(df_users.index.to_list())
-
-
-    ### METRIC-RATER AGREEMENT ###
+    ### INTER-RATER AGREEMENT ###
     for group in users_groups:
-        compute_cohen_metric(group, MIX_FLAG)
-    compute_cohen_metric(df_users.index.to_list(), MIX_FLAG)
+        c_k = compute_cohen(group)
+        compute_ci(c_k, group)
+    c_k = compute_cohen(df_users.index.to_list())
+    compute_ci(c_k, df_users.index.to_list())
+
+
+    # # ### METRIC-RATER AGREEMENT ###
+    # # for group in users_groups:
+    # #     compute_cohen_metric(group, MIX_FLAG)
+    # # compute_cohen_metric(df_users.index.to_list(), MIX_FLAG)
     
+
 

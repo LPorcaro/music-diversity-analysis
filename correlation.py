@@ -10,11 +10,18 @@ from mpl_toolkits.mplot3d import Axes3D
 
 
 
-INPUT_FILE = "data/Users/Users_20201106.csv"
+INPUT_FILE = "data/Users/Users_20201201.csv"
+INPUT_FILE = "data/TV/TVFeatAll_20201125.csv"
 
-G1 = ["PlayiningTime", "TasteVariety", "ElectronicMusic", "ElectronicTasteVariety"]
+
+# G1 = G2 = ["FormalTraining","PlayiningTime","TasteVariety","ElectronicMusic","ElectronicTasteVariety","GAPScore"]
+
+G1 = ["danceable","aggressive","happy","party","relaxed","sad","dark","atonal","voice"]
+
+G2 = ["silence_rate_30dB_mean","silence_rate_30dB_std","silence_rate_60dB_mean","silence_rate_60dB_std","dynamic_complexity","dissonance_mean","dissonance_std","average_loudness","pitch_salience_mean","pitch_salience_std","spectral_entropy_mean","spectral_entropy_std","zerocrossingrate_mean","zerocrossingrate_std","hpcp_crest_mean","hpcp_crest_std","hpcp_entropy_mean","hpcp_entropy_std","onset_rate","bpm"]
+# G1 = ["PlayiningTime", "TasteVariety", "ElectronicMusic", "ElectronicTasteVariety"]
 # G2 = ["ScoreMainstream", "ScoreSurvey", "MeanScore", "SocialScore", "GAPScore"]
-G2 = ["GAPScore"]
+# G2 = ["GAPScore"]
 
 if __name__ == '__main__':
 
@@ -23,15 +30,25 @@ if __name__ == '__main__':
     # print(df)
     done = set()
 
-    for g1 in G1+G2:
-        for g2 in G1+G2:
+    corrs = []
+    for g1 in G1:
+        for g2 in G2:
             if g1!=g2:
                 if (g1,g2) not in done or (g2,g1) not in done:
-                    print(g1,g2,pearsonr(df[g1],df[g2]))
+                    ro,p = pearsonr(df[g1],df[g2])
+                    corrs.append((g1,g2,ro, p))
                     done.add((g1,g2))
+                    done.add((g2,g1))
 
 
+    sorted_by_second = sorted(corrs, key=lambda tup: tup[2])
 
+    for g in G1:
+        for el in sorted_by_second:
+            if g==el[0] and "silence_rate" not in el[1]:
+                print(el)
+                break
+        
 
 
 
