@@ -1,0 +1,33 @@
+Country,Continent,RegionalGroupings,Gender,Skintype
+US,North America,A,Male,A
+South Africa ,Africa,D,Male,A
+Japan,Asia,A,Male,A
+Guatemala,South America,L,Male,A
+France,Europe,A,Male,A
+China,Asia,G,Female,A
+Colombia,South America,L,Male,B
+Jordan,Asia,I,Female,B
+US,North America,A,Male,A
+UK,Europe,A,Male,A
+Italy,Europe,A,Male,A
+France,Europe,A,Male,A
+US,North America,A,Nonbinary,A
+UK,Europe,A,Female,A
+The Netherlands,Europe,A,Female,A
+Germany,Europe,A,Female,A
+Lebanon,Asia,I,Female,A
+Uganda,Africa,D,Female,B
+Tunisia,Africa,C,Female,B
+Russia,Europe,B,Female,A
+India,Asia,H,Female,B
+Chile,South America,L,Female,B
+US,North America,A,Male,A
+India,Asia,H,Male,B
+Senegal,Africa,D,Male,B
+Uganda,Africa,D,Female,B
+South Africa,Africa,D,Male,B
+Egypt,Africa,C,Female,B
+Belgium,Europe,A,Female,A
+Ireland,Europe,A,Male,A
+Chile,South America,L,Male,B
+South Korea,Asia,G,Female,B

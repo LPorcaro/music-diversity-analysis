@@ -15,13 +15,12 @@ from sklearn.decomposition import PCA
 from numpy.linalg import norm
 
 
-# INPUT_FEED = "data/TV/TrackVarietyAnswersB.csv"
-# INPUT_FEED = "data/AD/ArtistDiversityAnswersB.csv"
-INPUT_FEED = "data/MIX/MixedAnswersB.csv"
+# INPUT_FEED = "../data/TRACK/TrackVarietyAnswersB.csv"
+# INPUT_FEED = "../data/ARTIST/ArtistDiversityAnswersB.csv"
+INPUT_FEED = "../data/BOTH/MixedAnswersB.csv"
 
-INPUT_USERS = "data/Users/Users_soph_fam_20201029.csv"
-# INPUT_USERS = "data/Users/Users_Factors_20201117.csv"
-
+INPUT_USERS_DK = "../data/Users/Users_domain_knowledge.csv"
+INPUT_USERS_DEM = "../data/Users/Users_demographics.csv"
 VALUES_DOMAIN = ["List A", "List B", "I don't know"]    
 
 
@@ -219,8 +218,8 @@ def plot_clusters(X, X_new, clusterer, clusterer_new):
 if __name__ == '__main__':
 
     # Import Data 
-    df_users = pd.read_csv("data/Users/Users_dem_20201118.csv")
-    df_users_clust = pd.read_csv(INPUT_USERS)
+    df_users = pd.read_csv(INPUT_USERS_DEM)
+    df_users_clust = pd.read_csv(INPUT_USERS_DK)
     df_feedback = pd.read_csv(INPUT_FEED)
 
     users_groups = []

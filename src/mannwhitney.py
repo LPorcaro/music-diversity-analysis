@@ -1,4 +1,6 @@
 """
+from: https://github.com/Hatchin/Mann-Whitney-U-Test
+--------------------------------------
 MIT License
 
 Copyright (c) 2019 Sangyu Shen

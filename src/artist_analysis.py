@@ -20,8 +20,8 @@ from scipy import stats
 from mannwhitney import mannWhitney
 
 
-# INPUT = "data/AD/ArtistsFeatures_20201105b.csv"
-INPUT = "data/MIX/ArtistsFeatures_20201202b.csv"
+INPUT = "../data/ARTIST/ArtistsFeatures_20201105.csv"
+# INPUT = "../data/BOTH/ArtistsFeatures_20201202.csv"
 
 
 def goodall_distance(df):

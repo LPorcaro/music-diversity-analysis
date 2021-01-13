@@ -1,0 +1,116 @@
+Age,Gender,SkinType,Origin,Instruction,MusicalEducation,PlayiningTime,TasteVariety,ElectronicMusic,ElectronicTasteVariety,TVChoice,ADChoice,MIXChoice
+25-34 years old,Male,5,South America,"Master’s degree (e.g. MA, MS, MEd)",Yes,4,5,4,3,Now,Now,Previous
+35-44 years old,Female,2,Europe,"Doctorate (e.g. PhD, EdD)",No,5,5,5,5,Previous,Previous,Now
+18-24 years old,Male,2,Europe,"Master’s degree (e.g. MA, MS, MEd)",Yes,5,4,5,4,Previous,Now,Now
+45-54 years old,Male,3,Europe,"Doctorate (e.g. PhD, EdD)",Yes,4,5,5,5,Now,Now,Now
+25-34 years old,Male,2,,"Bachelor’s degree (e.g. BA, BS)",No,1,5,3,5,Now,Now,Now
+35-44 years old,Male,3,South America,"Master’s degree (e.g. MA, MS, MEd)",Yes,1,5,5,4,Previous,Previous,Now
+25-34 years old,Male,2,,"Bachelor’s degree (e.g. BA, BS)",Yes,3,5,4,4,Now,Now,Now
+45-54 years old,Female,4,North America,"Master’s degree (e.g. MA, MS, MEd)",No,1,4,5,4,Now,Now,Now
+35-44 years old,Male,1,Europe,"Doctorate (e.g. PhD, EdD)",No,4,5,4,5,Now,Now,Now
+25-34 years old,Male,4,South America,"Bachelor’s degree (e.g. BA, BS)",Yes,5,4,5,5,Now,Previous,Now
+18-24 years old,Male,3,Europe,"Bachelor’s degree (e.g. BA, BS)",No,5,3,5,4,Now,Now,Now
+25-34 years old,Male,I prefer not to say,North America,High school degree or equivalent,No,4,4,3,2,Now,Now,Now
+18-24 years old,Male,1,Oceania,High school degree or equivalent,No,3,4,5,5,Now,Previous,Now
+25-34 years old,Female,2,Europe,"Master’s degree (e.g. MA, MS, MEd)",No,1,4,4,4,Previous,Now,Now
+25-34 years old,Female,2,Europe,"Master’s degree (e.g. MA, MS, MEd)",No,2,3,4,2,Now,Now,Now
+25-34 years old,Male,3,Europe,"Master’s degree (e.g. MA, MS, MEd)",Yes,5,5,5,5,Now,Now,Now
+35-44 years old,Female,I prefer not to say,Europe,"Master’s degree (e.g. MA, MS, MEd)",No,1,5,4,4,Previous,Previous,Previous
+45-54 years old,Male,3,,"Master’s degree (e.g. MA, MS, MEd)",No,1,5,3,4,Previous,Previous,Previous
+35-44 years old,Male,1,Europe,"Doctorate (e.g. PhD, EdD)",Yes,2,4,3,4,Now,Now,Now
+35-44 years old,Male,1,Europe,"Doctorate (e.g. PhD, EdD)",Yes,4,3,2,3,Now,Now,Now
+25-34 years old,Female,3,Europe,"Master’s degree (e.g. MA, MS, MEd)",Yes,1,4,4,4,Now,Now,Now
+18-24 years old,Male,1,Europe,"Master’s degree (e.g. MA, MS, MEd)",Yes,5,5,4,4,Now,Now,Now
+25-34 years old,Male,2,Europe,"Master’s degree (e.g. MA, MS, MEd)",No,1,4,5,4,Now,Now,Now
+35-44 years old,Female,3,Africa,"Doctorate (e.g. PhD, EdD)",Yes,1,5,3,5,Now,Now,Now
+35-44 years old,Female,1,Europe,"Doctorate (e.g. PhD, EdD)",Yes,5,5,5,5,Now,Previous,Previous
+35-44 years old,Male,4,South America,"Master’s degree (e.g. MA, MS, MEd)",No,2,5,5,5,Previous,Now,Now
+25-34 years old,I prefer not to say,1,Europe,High school degree or equivalent,Yes,2,4,2,3,Now,Now,Now
+25-34 years old,Male,I prefer not to say,I prefer not to say,,Yes,5,3,4,4,Now,Now,Now
+25-34 years old,Male,2,South America,"Master’s degree (e.g. MA, MS, MEd)",Yes,3,5,3,3,Now,Now,Now
+25-34 years old,Male,3,Europe,"Master’s degree (e.g. MA, MS, MEd)",Yes,5,5,5,5,Now,Now,Now
+18-24 years old,Male,2,Europe,"Bachelor’s degree (e.g. BA, BS)",Yes,5,5,5,5,Previous,Now,Previous
+35-44 years old,I prefer not to say,4,North America,"Bachelor’s degree (e.g. BA, BS)",Yes,5,5,5,5,Now,Previous,Now
+25-34 years old,Female,2,Europe,"Master’s degree (e.g. MA, MS, MEd)",Yes,1,3,2,2,Now,Now,Now
+55-64 years old,Male,2,Europe,"Doctorate (e.g. PhD, EdD)",Yes,4,5,5,4,Now,Now,Now
+35-44 years old,Male,2,Europe,"Master’s degree (e.g. MA, MS, MEd)",Yes,3,5,4,5,Previous,Now,Now
+25-34 years old,Male,1,Europe,"Bachelor’s degree (e.g. BA, BS)",Yes,5,5,5,5,Now,Now,Now
+25-34 years old,Male,2,,"Bachelor’s degree (e.g. BA, BS)",No,1,4,4,3,Now,Previous,Now
+35-44 years old,Male,2,,"Bachelor’s degree (e.g. BA, BS)",No,1,4,5,4,Now,Now,Now
+45-54 years old,Male,1,Oceania,"Master’s degree (e.g. MA, MS, MEd)",No,5,5,5,5,Now,Now,Previous
+25-34 years old,Male,1,Oceania,"Master’s degree (e.g. MA, MS, MEd)",No,1,4,5,4,Now,Now,Now
+35-44 years old,Male,2,I prefer not to say,"Doctorate (e.g. PhD, EdD)",No,5,4,5,4,Now,Now,Now
+45-54 years old,Male,1,Europe,"Master’s degree (e.g. MA, MS, MEd)",Yes,3,3,4,3,Now,Now,Now
+25-34 years old,Male,2,Europe,"Doctorate (e.g. PhD, EdD)",Yes,3,4,3,2,Now,Now,Now
+25-34 years old,Male,I prefer not to say,Europe,"Doctorate (e.g. PhD, EdD)",Yes,5,5,4,4,Now,Now,Now
+35-44 years old,Male,5,Asia,"Bachelor’s degree (e.g. BA, BS)",Yes,5,5,5,5,Now,Now,Now
+25-34 years old,Female,3,Europe,"Master’s degree (e.g. MA, MS, MEd)",No,5,5,5,5,Now,Previous,Now
+35-44 years old,Male,2,Europe,"Master’s degree (e.g. MA, MS, MEd)",No,4,2,5,5,Now,Now,Now
+45-54 years old,Male,1,Europe,"Bachelor’s degree (e.g. BA, BS)",Yes,4,4,3,3,Now,Now,Now
+35-44 years old,Male,3,Europe,"Doctorate (e.g. PhD, EdD)",No,1,2,3,2,Now,Now,Now
+35-44 years old,I prefer not to say,3,Europe,"Bachelor’s degree (e.g. BA, BS)",Yes,5,3,4,4,Previous,Now,Previous
+25-34 years old,Male,2,Europe,"Bachelor’s degree (e.g. BA, BS)",Yes,5,5,5,5,Now,Now,Now
+25-34 years old,Male,1,Europe,High school degree or equivalent,Yes,5,5,5,5,Now,Previous,Previous
+35-44 years old,Male,1,Europe,"Master’s degree (e.g. MA, MS, MEd)",Yes,2,4,4,3,Now,Now,Now
+18-24 years old,Male,2,Europe,"Master’s degree (e.g. MA, MS, MEd)",Yes,5,4,5,3,Now,Now,Now
+18-24 years old,Male,I prefer not to say,Europe,"Master’s degree (e.g. MA, MS, MEd)",No,5,5,5,3,Now,Now,Now
+18-24 years old,Male,1,Europe,"Bachelor’s degree (e.g. BA, BS)",Yes,2,5,5,5,Now,Now,Previous
+35-44 years old,Male,1,Europe,High school degree or equivalent,No,1,5,4,5,Now,Now,Now
+18-24 years old,Male,I prefer not to say,North America,High school degree or equivalent,No,4,5,5,5,Now,Now,Now
+35-44 years old,Male,3,South America,"Bachelor’s degree (e.g. BA, BS)",No,5,2,5,4,Now,Now,Now
+35-44 years old,Male,2,Europe,"Bachelor’s degree (e.g. BA, BS)",Yes,5,5,5,5,Now,Now,Now
+25-34 years old,Male,2,Europe,"Bachelor’s degree (e.g. BA, BS)",Yes,5,5,5,5,Now,Now,Now
+25-34 years old,Male,3,Europe,"Master’s degree (e.g. MA, MS, MEd)",Yes,3,4,5,4,Now,Now,Previous
+25-34 years old,Male,1,Europe,"Master’s degree (e.g. MA, MS, MEd)",No,1,5,5,4,Now,Now,Now
+18-24 years old,I prefer not to say,4,Europe,"Bachelor’s degree (e.g. BA, BS)",No,1,4,4,3,Previous,Now,Now
+18-24 years old,I prefer not to say,4,Europe,"Bachelor’s degree (e.g. BA, BS)",No,1,4,4,3,Previous,Now,Now
+45-54 years old,Male,1,Europe,High school degree or equivalent,Yes,1,5,3,3,Now,Now,Now
+25-34 years old,Male,3,South America,"Doctorate (e.g. PhD, EdD)",Yes,3,5,4,5,Now,Now,Now
+35-44 years old,Male,1,Europe,High school degree or equivalent,Yes,4,4,5,4,Now,Now,Previous
+18-24 years old,Male,3,Asia,High school degree or equivalent,Yes,4,3,5,5,Now,Now,Now
+25-34 years old,Male,1,Asia,"Doctorate (e.g. PhD, EdD)",Yes,2,5,4,4,Now,Now,Now
+18-24 years old,Male,2,Europe,"Master’s degree (e.g. MA, MS, MEd)",Yes,3,4,5,4,Now,Now,Now
+18-24 years old,I prefer not to say,4,Europe,"Bachelor’s degree (e.g. BA, BS)",No,1,4,4,3,Previous,Now,Now
+18-24 years old,Male,2,Europe,"Master’s degree (e.g. MA, MS, MEd)",Yes,5,3,5,4,Now,Now,Now
+35-44 years old,Male,1,Europe,"Master’s degree (e.g. MA, MS, MEd)",No,1,4,2,2,Now,Now,Now
+18-24 years old,I prefer not to say,4,Europe,"Bachelor’s degree (e.g. BA, BS)",No,1,4,4,3,Previous,Now,Now
+18-24 years old,Male,2,Europe,High school degree or equivalent,Yes,5,4,5,4,Now,Now,Now
+25-34 years old,Male,1,South America,"Master’s degree (e.g. MA, MS, MEd)",Yes,3,5,5,2,Previous,Previous,Previous
+25-34 years old,Female,2,Europe,"Master’s degree (e.g. MA, MS, MEd)",No,1,5,5,4,Now,Now,Now
+18-24 years old,Male,3,South America,High school degree or equivalent,No,2,4,5,4,Now,Now,Now
+25-34 years old,Male,I prefer not to say,South America,"Bachelor’s degree (e.g. BA, BS)",Yes,3,4,3,2,Now,Now,Now
+25-34 years old,Male,4,South America,"Master’s degree (e.g. MA, MS, MEd)",No,5,5,5,5,Now,Previous,Previous
+45-54 years old,Male,1,Europe,"Professional degree (e.g. MD, DDS, DVM)",No,4,4,5,5,Now,Now,Now
+18-24 years old,Male,1,Europe,High school degree or equivalent,No,2,2,1,1,Now,Now,Now
+25-34 years old,Male,2,Europe,"Master’s degree (e.g. MA, MS, MEd)",No,1,3,1,1,Now,Now,Now
+25-34 years old,Male,1,Europe,"Master’s degree (e.g. MA, MS, MEd)",Yes,1,3,3,2,Now,Now,Now
+I prefer not to say,I prefer not to say,6,Africa,"Doctorate (e.g. PhD, EdD)",Yes,4,1,4,1,Previous,Previous,Previous
+25-34 years old,Male,2,Europe,"Bachelor’s degree (e.g. BA, BS)",Yes,5,4,5,5,Now,Previous,Now
+35-44 years old,Female,1,Europe,"Master’s degree (e.g. MA, MS, MEd)",No,1,5,5,5,Now,Now,Now
+25-34 years old,Male,2,Europe,"Master’s degree (e.g. MA, MS, MEd)",No,3,5,5,5,Previous,Previous,Previous
+35-44 years old,Female,1,Europe,"Doctorate (e.g. PhD, EdD)",Yes,3,4,4,2,Now,Now,Now
+45-54 years old,Male,2,Asia,"Doctorate (e.g. PhD, EdD)",No,1,4,5,4,Now,Now,Now
+35-44 years old,Male,1,Europe,High school degree or equivalent,No,1,5,5,5,Previous,Now,Now
+35-44 years old,Female,1,North America,"Master’s degree (e.g. MA, MS, MEd)",No,1,5,5,5,Now,Now,Now
+25-34 years old,Male,1,Europe,"Bachelor’s degree (e.g. BA, BS)",No,4,4,5,5,Now,Now,Now
+18-24 years old,Female,2,Europe,High school degree or equivalent,Yes,2,5,5,4,Now,Now,Now
+25-34 years old,Male,2,Europe,"Master’s degree (e.g. MA, MS, MEd)",Yes,5,5,5,4,Previous,Previous,Previous
+25-34 years old,Male,2,Europe,High school degree or equivalent,No,5,5,5,5,Now,Now,Now
+35-44 years old,Female,2,South America,"Doctorate (e.g. PhD, EdD)",Yes,3,1,2,1,Now,Now,Now
+25-34 years old,Male,2,Europe,"Master’s degree (e.g. MA, MS, MEd)",Yes,5,5,5,5,Now,Now,Now
+25-34 years old,Male,1,Europe,"Master’s degree (e.g. MA, MS, MEd)",Yes,3,4,2,3,Now,Now,Now
+35-44 years old,Male,3,Europe,"Master’s degree (e.g. MA, MS, MEd)",Yes,5,2,5,2,Now,Now,Now
+25-34 years old,I prefer not to say,I prefer not to say,Europe,"Master’s degree (e.g. MA, MS, MEd)",Yes,5,4,5,3,Now,Now,Now
+25-34 years old,Male,5,Asia,"Master’s degree (e.g. MA, MS, MEd)",No,2,5,5,5,Previous,Now,Now
+35-44 years old,Female,3,Europe,"Master’s degree (e.g. MA, MS, MEd)",Yes,1,5,2,3,Now,Now,Now
+35-44 years old,I prefer not to say,4,,"Doctorate (e.g. PhD, EdD)",Yes,5,5,5,5,Previous,Previous,Now
+25-34 years old,Male,4,North America,"Master’s degree (e.g. MA, MS, MEd)",Yes,1,4,5,5,Now,Previous,Now
+25-34 years old,Male,2,Europe,"Doctorate (e.g. PhD, EdD)",Yes,4,4,2,3,Now,Now,Now
+35-44 years old,I prefer not to say,4,South America,"Master’s degree (e.g. MA, MS, MEd)",Yes,1,5,4,3,Now,Now,Now
+25-34 years old,Male,3,Europe,"Master’s degree (e.g. MA, MS, MEd)",Yes,1,3,1,1,Now,Now,Now
+25-34 years old,Female,2,Europe,"Master’s degree (e.g. MA, MS, MEd)",Yes,1,5,4,4,Now,Now,Now
+25-34 years old,Female,1,Europe,"Master’s degree (e.g. MA, MS, MEd)",No,1,3,4,1,Now,Now,Now
+25-34 years old,Female,3,Europe,"Master’s degree (e.g. MA, MS, MEd)",No,1,5,4,3,Now,Now,Now
+25-34 years old,Male,3,Europe,"Doctorate (e.g. PhD, EdD)",No,3,5,3,4,Now,Previous,Now
+35-44 years old,Male,2,Europe,"Master’s degree (e.g. MA, MS, MEd)",Yes,5,4,5,3,Now,Now,Now
+35-44 years old,Male,3,Europe,"Bachelor’s degree (e.g. BA, BS)",Yes,2,4,4,4,Now,Now,Now

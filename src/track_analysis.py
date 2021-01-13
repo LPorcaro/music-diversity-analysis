@@ -271,10 +271,10 @@ def analyze_features(featfile, plot):
 
 if __name__ == '__main__':
 
-    task = "TV"
-    IN_FOLDER = "/home/lorenzo/Data/divsurvey/essentia_extractor_music/{}".format(task)
+    task = "BOTH"
+    IN_FOLDER = "../data/essentia_extractor_music/{}".format(task)
 
-    high_level = False
+    high_level = True
     plot = False
     extract = False
 
@@ -283,7 +283,7 @@ if __name__ == '__main__':
     if high_level:
         file_attr = "High"
 
-    features_file= "data/{}/Feat{}_20201210.csv".format(task, file_attr)
+    features_file = "../data/{}/Feat{}_20210113.csv".format(task, file_attr)
     
     if not os.path.exists(features_file):
         extract_features(features_file, high_level)
