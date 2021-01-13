@@ -28,7 +28,6 @@ HEADER_HL = ['danceable', 'not_danceable',
             'atonal', 'tonal',
             'instrumental', 'voice']
 
-
 HEADER_LL = ['average_loudness',
              'barkbands_crest_mean', 'barkbands_crest_std',
              'barkbands_flatness_db_mean', 'barkbands_flatness_db_std',
@@ -90,7 +89,6 @@ HIGH_LEVEL = [
               "voice_instrumental",
               ]
 
-
 LOW_LEVEL = ['average_loudness',
              'barkbands_crest', 
              'barkbands_flatness_db', 
@@ -128,7 +126,6 @@ LOW_LEVEL = ['average_loudness',
              'spectral_skewness', 
              'spectral_strongpeak', 
              'zerocrossingrate']
-
 
 TONAL = ["chords_changes_rate",
          "chords_number_rate",
@@ -223,56 +220,7 @@ def analyze_features(featfile, plot):
     distances = pdist(df, 'cosine')
     out = squareform(distances)
 
-    # ### Normality test + Plot fit gaussian ###
-    stat, p = stats.shapiro(distances)
 
-    # df_dist = pd.read_csv("dists.csv", delimiter="\t")
-    
-
-    # print('Shapiro Test: Statistics={}, p={}'.format(stat, p))
-    # # bin_heights, bin_borders, _ = plt.hist([df_dist['d1'],df_dist['d2']], 
-    # #                                        bins='auto', 
-    # #                                        # label='histogram', 
-    # #                                        # facecolor = ['#2ab0ff','#ff552a'], 
-    # #                                        # edgecolor= ['#169acf','#ffbba9'], 
-    # #                                        linewidth=0.5,
-    # #                                        alpha = 0.5)
-
-    # bin_heights, bin_borders, _ = plt.hist(df_dist['d1'], 
-    #                                        bins='auto', 
-    #                                        label='histogram', 
-    #                                        facecolor = '#2ab0ff', 
-    #                                        edgecolor= '#169acf', 
-    #                                        linewidth=0.5,
-    #                                        alpha = 0.5)
-
-    # bin_centers = bin_borders[:-1] + np.diff(bin_borders) / 2
-    # popt, _ = curve_fit(gaussian, bin_centers, bin_heights, p0=[1., 0., 1.])
-    # plt.style.use('seaborn-whitegrid')
-    # x_interval_for_fit = np.linspace(bin_borders[0], bin_borders[-1], 10000)
-    # plt.plot(x_interval_for_fit, gaussian(x_interval_for_fit, *popt), 
-    #                                       label='fit', 
-    #                                       color='blue')
-
-    # bin_heights, bin_borders, _ = plt.hist(df_dist['d2'], 
-    #                                        bins='auto', 
-    #                                        label='histogram', 
-    #                                        facecolor = '#ff552a', 
-    #                                        edgecolor='#ffbba9', 
-    #                                        linewidth=0.5,
-    #                                        alpha = 0.5)
-
-    # bin_centers = bin_borders[:-1] + np.diff(bin_borders) / 2
-    # popt, _ = curve_fit(gaussian, bin_centers, bin_heights, p0=[1., 0., 1.])
-    # x_interval_for_fit = np.linspace(bin_borders[0], bin_borders[-1], 10000)
-    # plt.plot(x_interval_for_fit, gaussian(x_interval_for_fit, *popt), 
-    #                                       label='fit', 
-    #                                       color='red')
-
-    # plt.xlim([0,1])
-    # # plt.legend()
-    # if plot:
-    #     plt.show()
 
     # ### Group distances by List ###
     dist_groups = []
@@ -293,17 +241,6 @@ def analyze_features(featfile, plot):
         print("{:.3f} {:.2f} {:.2f}".format(min(dists), np.mean(dists), stats.mstats.gmean(dists)))
 
 
-    # print(max(meds[0], meds[1])/min(meds[0], meds[1]))
-    # print(max(meds[2], meds[3])/min(meds[2], meds[3]))
-    # print(max(meds[4], meds[5])/min(meds[4], meds[5]))
-    # print(max(meds[6], meds[7])/min(meds[6], meds[7]))
-
-    # for el in [(0,1), (2,3), (4,5), (7,6)]:
-    #     print((meds[el[0]] - meds[el[1]]) / meds[el[1]] *100)
-    #     # print(abs(meds[el[0]] - meds[el[1]])/np.mean(el)*100)
-
-
-        
     ### Mann-Whitney-U test ###
     print("\n### Mann-Whitney-U test ###")
     print("List 1-2")
@@ -329,23 +266,6 @@ def analyze_features(featfile, plot):
     print("Significance: {}; U-statistics: {}, EffectSize: {}\n".format(
                                         MU.significance, MU.u, MU.effectsize))    
     
-
-    # ### Max and Min distances ###
-    # min_v = out[np.where(out>0)].min()
-    # max_v = out[np.where(out>0)].max()
-    # print()
-    # print(min_v, max_v, np.where(out==min_v), np.where(out==max_v))
-
-    # # ### Save Distance Matrix and Plot it ###
-    # np.savetxt("data/TV/TVFeatHigh_CS_20201125.csv", out, 
-    #                                                  delimiter=',', 
-    #                                                  fmt='%.4f')
-    # figure = plt.figure() 
-    # axes = figure.add_subplot(111) 
-    # caxes = axes.matshow(out, interpolation ='nearest', cmap=cm.Spectral_r) 
-    # figure.colorbar(caxes)
-    # if plot:
-    #     plt.show()    
 
 
 

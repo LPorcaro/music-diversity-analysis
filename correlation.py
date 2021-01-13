@@ -1,13 +1,8 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-import csv
 from scipy.stats.stats import pearsonr
 import pandas as pd
-from matplotlib import pyplot as plt 
-
-from mpl_toolkits.mplot3d import Axes3D
-
 
 
 INPUT_FILE = "data/Users/Users_20201201.csv"

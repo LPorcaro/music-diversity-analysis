@@ -1,29 +1,19 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-import csv
 import numpy as np 
-import gower
 import pandas as pd 
 import matplotlib.pyplot as plt
-import matplotlib.cm as cm
 import math
 import random
 
 from itertools import combinations
 from sklearn.manifold import TSNE
-from sklearn.cluster import KMeans
-from sklearn.metrics import silhouette_samples, silhouette_score
 from sklearn_extra.cluster import KMedoids
 from sklearn.metrics import cohen_kappa_score
 from sklearn.decomposition import PCA
-from sklearn.ensemble import IsolationForest
-from sklearn.cluster import AgglomerativeClustering
 from numpy.linalg import norm
-from statsmodels.stats.inter_rater import fleiss_kappa
-from tqdm import tqdm
 
-# INPUT_FEED = "data/Users/Users_TVFactors_20201126.csv"
 
 # INPUT_FEED = "data/TV/TrackVarietyAnswersB.csv"
 # INPUT_FEED = "data/AD/ArtistDiversityAnswersB.csv"
@@ -35,65 +25,10 @@ INPUT_USERS = "data/Users/Users_soph_fam_20201029.csv"
 VALUES_DOMAIN = ["List A", "List B", "I don't know"]    
 
 
-# MVALUES_TV = [2,1,1,2]
-# MVALUES_AD = [2,2,1,2]
-# MVALUES_MIX = [2,2,2,1]
-
 MVALUES_TV = ['List B','List A','List A','List B']
 MVALUES_AD = ['List B','List B','List A','List B']
 MVALUES_MIX = ['List B','List B','List B','List A']
 
-
-
-# MVALUES_MIX = [[2,1,2,1],
-#                [2,2,2,1],
-#                [2,2,2,2],
-#                [2,2,1,2],
-#                [2,2,1,2]]
-
-def SilhouetteAnalysis(X):
-    """
-    """
-    range_n_clusters = np.arange(2,20)
-    silhouette_avgs = []
-
-    for n_clusters in range_n_clusters:
-
-        # Initialize the clusterer with n_clusters value and a random generator
-        # seed of 10 for reproducibility.
-        clusterer = KMedoids(n_clusters=n_clusters,
-                             metric="euclidean",
-                             random_state=rng)
-        # clusterer = KMeans(n_clusters=n_clusters, random_state=10)
-        cluster_labels = clusterer.fit_predict(X)
-
-        # The silhouette_score gives the average value for all the samples.
-        # This gives a perspective into the density and separation of the formed
-        # clusters
-        silhouette_avg = silhouette_score(X, cluster_labels)
-        print("For n_clusters =", n_clusters,
-              "The average silhouette_score is :", silhouette_avg)
-        silhouette_avgs.append(silhouette_avg)
-
-
-    plt.plot(range_n_clusters, silhouette_avgs)
-    locs, labels=plt.xticks()
-    new_xticks=[str(x) for x in range_n_clusters]
-    plt.xticks(range_n_clusters, new_xticks, rotation=45, horizontalalignment='right')
-    plt.show()
-
-    cluster_number = silhouette_avgs.index(max(silhouette_avgs)) + 2
-    print("\nOptimal number of clusters = {}".format(cluster_number))
-    return cluster_number
-
-def compute_alpha(participant_ids):
-    """
-    """
-    k_a, o = k_alpha(df_feedback.iloc[participant_ids],
-                     value_domain=VALUES_DOMAIN, 
-                     level_of_measurement='nominal')
-    print(k_a)#, len(participant_ids))
-    return k_a
 
 def compute_ci(kappa, group):
     """
@@ -152,47 +87,6 @@ def compute_cohen_metric(participant_ids):
     # print(c_k)
     return c_k
 
-def compute_fleiss(participant_ids):
-    """
-    """
-    tasks = ['TV1','TV2','TV3','TV4']
-    # tasks = ['AD1','AD2','AD3','AD4']
-    # tasks = ['MIX1', 'MIX2', 'MIX3','MIX4']
-    rates = ['List A', 'List B', "I don't know"]
-
-
-    df_feedback_f = df_feedback.iloc[participant_ids]
-
-    t_full = []
-    t1 = []
-    t2 = []
-    for tk in tasks:
-        if tk == tasks[0] or tk == tasks[1]:
-            c_rts = []
-            for rt in rates:
-                try:
-                    c_rt = df_feedback_f[tk].value_counts()[rt]
-                except KeyError:
-                    c_rt = 0
-                c_rts.append(c_rt)
-            t_full.append(c_rts)
-            t1.append(c_rts)
-        elif tk == tasks[2] or tk == tasks[3]:
-            c_rts = []
-            for rt in rates:
-                try:
-                    c_rt = df_feedback_f[tk].value_counts()[rt]
-                except KeyError:
-                    c_rt = 0
-                c_rts.append(c_rt)
-            t_full.append(c_rts)
-            t2.append(c_rts)
-
-    # print(t_full)
-    # print(t1)
-    # print(t2)
-    print(fleiss_kappa(t_full),fleiss_kappa(t1),fleiss_kappa(t2))
-
 def create_users_groups(df):
     """
     """
@@ -240,7 +134,6 @@ def create_users_groups(df):
 def cluster_points(X):
     """
     """
-    # n_clusters = SilhouetteAnalysis(df_users) # SILHOUETTE ANALYSIS
 
     clusterer = KMedoids(n_clusters=n_clusters,
                          metric=metric,
@@ -337,10 +230,8 @@ if __name__ == '__main__':
     n_clusters = 3
     clusterer = cluster_points(df_users_clust)
 
+    print("\n### Create groups and print size")
     for n_c in np.arange(0, n_clusters):
-        # print(n_c)
-        # print(df_users_clust.iloc[np.where(clusterer.labels_==n_c)].describe(include='all'))
-        # df_users_clust.iloc[np.where(clusterer.labels_==n_c)].describe(include='all').to_csv("data/Users/user_cluster_20201029_{}.csv".format(n_c))
         group = np.where(clusterer.labels_ == n_c)[0]
         users_groups.append(group)
         print(len(group))
@@ -350,19 +241,19 @@ if __name__ == '__main__':
     users_groups = create_users_groups(df_users)
 
     
-    # ### INTER-RATER AGREEMENT ###
-    # for group in users_groups:
-    #     c_k = compute_cohen(group)
-    #     compute_ci(c_k, group)
-    # c_k = compute_cohen(df_users.index.to_list())
-    # compute_ci(c_k, df_users.index.to_list())
+    ### INTER-RATER AGREEMENT ###
+    print("\n### Compute Inter-Rater Agreement")
+    for group in users_groups:
+        c_k = compute_cohen(group)
+        compute_ci(c_k, group)
+    c_k = compute_cohen(df_users.index.to_list())
+    compute_ci(c_k, df_users.index.to_list())
 
 
     ### METRIC-RATER AGREEMENT ###
+    print("\n### Compute Metric Rater Agreement")
     for group in users_groups:
         c_k = compute_cohen_metric(group)
         compute_ci_metric(c_k, group)
     c_k = compute_cohen_metric(df_users.index.to_list())
     compute_ci_metric(c_k, df_users.index.to_list())
-
-

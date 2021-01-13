@@ -14,7 +14,6 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-from matplotlib import cm
 from collections import Counter
 from itertools import combinations
 from scipy import stats
@@ -79,10 +78,6 @@ if __name__ == '__main__':
 
     out, distances = goodall_distance(df)
 
-    # ### Normality test ###
-    stat, p = stats.shapiro(distances)
-    print('Statistics={}, p={}'.format(stat, p))
-
 
     # ### Group distances by List ###
     dist_groups = []
@@ -100,21 +95,6 @@ if __name__ == '__main__':
     for dists in dist_groups:
         print("{:.2f} {:.2f} {:.2f}".format(min(dists), np.mean(dists), stats.mstats.gmean(dists)))
 
-        # meds.append(np.median(dists))
-        # print("min:", min(dists))
-        # print("avg:", np.mean(dists))
-        # print("median:", np.median(dists))
-        # print("gmean:", stats.mstats.gmean(dists))
-        # print()
-
-    # print(max(meds[0], meds[1])/min(meds[0], meds[1]))
-    # print(max(meds[2], meds[3])/min(meds[2], meds[3]))
-    # print(max(meds[4], meds[5])/min(meds[4], meds[5]))
-    # print(max(meds[6], meds[7])/min(meds[6], meds[7]))
-
-
-    # for el in [(0,1), (2,3), (5,4), (6,7)]:
-    #     print((meds[el[0]] - meds[el[1]]) / meds[el[1]] *100)
         
     ### Mann-Whitney-U test ###
     print("\n### Mann-Whitney-U test ###")
@@ -141,23 +121,4 @@ if __name__ == '__main__':
     print("Significance: {}; U-statistics: {}, EffectSize: {}\n".format(
                                         MU.significance, MU.u, MU.effectsize))   
 
-
-
-    
-    # # Find min and max values
-    # min_v = out[np.where(out > 0)].min()
-    # max_v = out[np.where(out > 0)].max()
-    # min_i = np.where(out == min_v)
-    # max_i = np.where(out == max_v)
-    # # print(min_v, max_v, min_i, max_i)
-
-    # # Save Matrix and Plot it
-    # np.savetxt("data/AD/AD_Goodal1_out_20201118.csv",
-    #            out, delimiter=',', fmt='%.4f')
-    # figure = plt.figure()
-    # axes = figure.add_subplot(111)
-    # caxes = axes.matshow(out, interpolation='nearest',
-    #                      cmap=cm.Spectral_r)
-    # figure.colorbar(caxes)
-    # plt.show()
 
