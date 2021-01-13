@@ -6,3 +6,9 @@ It contains raw data and code to replicate the experiment described in the submi
 At the time of the submission, documentation is still not available, and it will be updated before the submission of the camera-ready version, in case of acceptance. 
 
 For facilitating the review process, the repository is submitted in an anonymous form. 
+
+#### Installation:
+Create a virtual environment (tested on Python 3.8), then launch the following command for installing the dependencies:
+ ```
+pip install -r src/requirements.txt
+ ```
