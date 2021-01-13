@@ -1,1 +1,1 @@
-# Perceptions of Diversity in Electronic Music: the Impact ofListener, Artist, and Track Characteristics
+# Perceptions of Diversity in Electronic Music: the Impact of Listener, Artist, and Track Characteristics
