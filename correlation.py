@@ -11,15 +11,56 @@ from mpl_toolkits.mplot3d import Axes3D
 
 
 INPUT_FILE = "data/Users/Users_20201201.csv"
-INPUT_FILE = "data/TV/TVFeatAll_20201125.csv"
+# INPUT_FILE = "data/TV/FeatAll_20201210.csv"
 
 
 # G1 = G2 = ["FormalTraining","PlayiningTime","TasteVariety","ElectronicMusic","ElectronicTasteVariety","GAPScore"]
 
 G1 = ["danceable","aggressive","happy","party","relaxed","sad","dark","atonal","voice"]
 
-G2 = ["silence_rate_30dB_mean","silence_rate_30dB_std","silence_rate_60dB_mean","silence_rate_60dB_std","dynamic_complexity","dissonance_mean","dissonance_std","average_loudness","pitch_salience_mean","pitch_salience_std","spectral_entropy_mean","spectral_entropy_std","zerocrossingrate_mean","zerocrossingrate_std","hpcp_crest_mean","hpcp_crest_std","hpcp_entropy_mean","hpcp_entropy_std","onset_rate","bpm"]
-# G1 = ["PlayiningTime", "TasteVariety", "ElectronicMusic", "ElectronicTasteVariety"]
+# G2 = ["silence_rate_30dB_mean","silence_rate_30dB_std","silence_rate_60dB_mean","silence_rate_60dB_std","dynamic_complexity","dissonance_mean","dissonance_std","average_loudness","pitch_salience_mean","pitch_salience_std","spectral_entropy_mean","spectral_entropy_std","zerocrossingrate_mean","zerocrossingrate_std","hpcp_crest_mean","hpcp_crest_std","hpcp_entropy_mean","hpcp_entropy_std","onset_rate","bpm"]
+G2 = [ 
+             'dynamic_complexity', 
+             'hfc_mean', 'hfc_std',
+             'pitch_salience_mean', 'pitch_salience_std', 
+             'silence_rate_30dB_mean', 'silence_rate_30dB_std',
+             'silence_rate_60dB_mean', 'silence_rate_60dB_std',
+             'spectral_centroid_mean', 'spectral_centroid_std',  
+             'spectral_decrease_mean', 'spectral_decrease_std', 
+             'spectral_energy_mean', 'spectral_energy_std', 
+             'spectral_energyband_high_mean', 'spectral_energyband_high_std', 
+             'spectral_energyband_low_mean', 'spectral_energyband_low_std', 
+             'spectral_energyband_middle_high_mean', 'spectral_energyband_middle_high_std', 
+             'spectral_energyband_middle_low_mean',  'spectral_energyband_middle_low_std', 
+             'spectral_entropy_mean',  'spectral_entropy_std', 
+             'spectral_flux_mean', 'spectral_flux_std', 
+             'spectral_kurtosis_mean', 'spectral_kurtosis_std', 
+             'spectral_rms_mean', 'spectral_rms_std', 
+             'spectral_rolloff_mean', 'spectral_rolloff_std', 
+             'spectral_skewness_mean', 'spectral_skewness_std', 
+             'spectral_strongpeak_mean', 'spectral_strongpeak_std', 
+             'zerocrossingrate_mean','zerocrossingrate_std',
+             "chords_changes_rate",
+             "chords_number_rate",
+             "chords_strength_mean","chords_strength_std",
+             'hpcp_crest_mean','hpcp_crest_std',
+             'hpcp_entropy_mean','hpcp_entropy_std',
+             "tuning_diatonic_strength",
+             "tuning_equal_tempered_deviation",
+             "tuning_frequency",
+             "tuning_nontempered_energy_ratio",
+             'onset_rate',
+             'bpm']
+
+
+
+G1 = G2 = ["FormalTraining", 
+      "PlayiningTime", 
+      "TasteVariety", 
+      "ElectronicMusic", 
+      "ElectronicTasteVariety", 
+      "GAPScore"]
+
 # G2 = ["ScoreMainstream", "ScoreSurvey", "MeanScore", "SocialScore", "GAPScore"]
 # G2 = ["GAPScore"]
 
@@ -37,17 +78,20 @@ if __name__ == '__main__':
                 if (g1,g2) not in done or (g2,g1) not in done:
                     ro,p = pearsonr(df[g1],df[g2])
                     corrs.append((g1,g2,ro, p))
+                    print((g1,g2,ro, p))
                     done.add((g1,g2))
                     done.add((g2,g1))
 
 
-    sorted_by_second = sorted(corrs, key=lambda tup: tup[2])
 
-    for g in G1:
-        for el in sorted_by_second:
-            if g==el[0] and "silence_rate" not in el[1]:
-                print(el)
-                break
+
+    # sorted_by_second = sorted(corrs, key=lambda tup: tup[2], reverse=True)
+
+    # for g in G1:
+    #     if g =='aggressive':
+    #         for el in sorted_by_second:
+    #             if g==el[0] and "silence_rate" not in el[1]:
+    #                 print(el)
         
 
 

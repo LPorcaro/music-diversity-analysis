@@ -226,7 +226,7 @@ def analyze_features(featfile, plot):
     # ### Normality test + Plot fit gaussian ###
     stat, p = stats.shapiro(distances)
 
-    df_dist = pd.read_csv("dists.csv", delimiter="\t")
+    # df_dist = pd.read_csv("dists.csv", delimiter="\t")
     
 
     # print('Shapiro Test: Statistics={}, p={}'.format(stat, p))
@@ -290,7 +290,7 @@ def analyze_features(featfile, plot):
     meds = []
 
     for dists in dist_groups:
-        print("{:.2f} {:.2f} {:.2f}".format(min(dists), np.mean(dists), stats.mstats.gmean(dists)))
+        print("{:.3f} {:.2f} {:.2f}".format(min(dists), np.mean(dists), stats.mstats.gmean(dists)))
 
 
     # print(max(meds[0], meds[1])/min(meds[0], meds[1]))
@@ -308,20 +308,24 @@ def analyze_features(featfile, plot):
     print("\n### Mann-Whitney-U test ###")
     print("List 1-2")
     MU = mannWhitney(dist_groups[0], dist_groups[1])
+    print(np.median(dist_groups[0]), np.median(dist_groups[1]))
     print("Significance: {}; U-statistics: {}, EffectSize: {}\n".format(
                                         MU.significance, MU.u, MU.effectsize))
 
     print("List 3-4")
     MU = mannWhitney(dist_groups[2], dist_groups[3])
+    print(np.median(dist_groups[2]), np.median(dist_groups[3]))
     print("Significance: {}; U-statistics: {}, EffectSize: {}\n".format(
                                         MU.significance, MU.u, MU.effectsize))    
     print("List 5-6")
     MU = mannWhitney(dist_groups[4], dist_groups[5])
+    print(np.median(dist_groups[4]), np.median(dist_groups[5]))
     print("Significance: {}; U-statistics: {}, EffectSize: {}\n".format(
                                         MU.significance, MU.u, MU.effectsize))    
     
     print("List 7-8")
     MU = mannWhitney(dist_groups[6], dist_groups[7])
+    print(np.median(dist_groups[6]), np.median(dist_groups[7]))
     print("Significance: {}; U-statistics: {}, EffectSize: {}\n".format(
                                         MU.significance, MU.u, MU.effectsize))    
     
@@ -347,10 +351,10 @@ def analyze_features(featfile, plot):
 
 if __name__ == '__main__':
 
-    task = "MIX"
+    task = "TV"
     IN_FOLDER = "/home/lorenzo/Data/divsurvey/essentia_extractor_music/{}".format(task)
 
-    high_level = True
+    high_level = False
     plot = False
     extract = False
 

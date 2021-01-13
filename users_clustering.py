@@ -23,8 +23,6 @@ from numpy.linalg import norm
 from statsmodels.stats.inter_rater import fleiss_kappa
 from tqdm import tqdm
 
-from kripp_juan import alpha as k_alpha 
-
 # INPUT_FEED = "data/Users/Users_TVFactors_20201126.csv"
 
 # INPUT_FEED = "data/TV/TrackVarietyAnswersB.csv"
@@ -36,15 +34,22 @@ INPUT_USERS = "data/Users/Users_soph_fam_20201029.csv"
 
 VALUES_DOMAIN = ["List A", "List B", "I don't know"]    
 
-MIX_FLAG = False
 
-MVALUES_TV = [2,1,1,2]
-MVALUES_AD = [2,2,1,2]
-MVALUES_MIX = [[2,1,2,1],
-               [2,2,2,1],
-               [2,2,2,2],
-               [2,2,1,2],
-               [2,2,1,2]]
+# MVALUES_TV = [2,1,1,2]
+# MVALUES_AD = [2,2,1,2]
+# MVALUES_MIX = [2,2,2,1]
+
+MVALUES_TV = ['List B','List A','List A','List B']
+MVALUES_AD = ['List B','List B','List A','List B']
+MVALUES_MIX = ['List B','List B','List B','List A']
+
+
+
+# MVALUES_MIX = [[2,1,2,1],
+#                [2,2,2,1],
+#                [2,2,2,2],
+#                [2,2,1,2],
+#                [2,2,1,2]]
 
 def SilhouetteAnalysis(X):
     """
@@ -101,8 +106,20 @@ def compute_ci(kappa, group):
         kappas.append(compute_cohen(ids_resampled))
 
     margin = 1.96*np.std(kappas)/np.sqrt(len(group))
-    print("{:.2f} [{:.2f},{:.2f}]".format(kappa,kappa-margin,kappa+margin))
+    print("{:.2f} \pm {:.2f}".format(kappa, margin))
 
+def compute_ci_metric(kappa, group):
+    """
+    """
+    resample = 100
+
+    kappas = []
+    for i in range(resample):
+        ids_resampled = np.array(random.choices(group, k=len(group)))
+        kappas.append(compute_cohen_metric(ids_resampled))
+
+    margin = 1.96*np.std(kappas)/np.sqrt(len(group))
+    print("{:.2f} \pm {:.2f}".format(kappa, margin))
 
 def compute_cohen(participant_ids):
     """
@@ -117,34 +134,22 @@ def compute_cohen(participant_ids):
 
     c_k = np.mean(k_tot)
 
-    # print(c_k)
-    # print(len(Participantsicipant_ids), c_k)
     return c_k
 
-def compute_cohen_metric(participant_ids, mix):
+def compute_cohen_metric(participant_ids):
     """
     """
-    df_feedbacknew = df_feedback.replace(
-                        ['List A'],1).replace(
-                            ['List B'],2).replace(
-                                ["I don't know"],0)
-
     k_tot = []
 
-    for c in participant_ids:
-        if mix:
-            metric_values = MVALUES_MIX[df_users.iloc[c]['MIX2']-1]
-        else:
-            metric_values = MVALUES_TV[2:]
-            
-        k = cohen_kappa_score(df_feedbacknew.iloc[c], metric_values)
+    for c in participant_ids:            
+        k = cohen_kappa_score(df_feedback.iloc[c], MVALUES_MIX[2:])
         if math.isnan(k):
             k=1
         k_tot.append(k)
 
     c_k = np.mean(k_tot)
 
-    print(c_k)
+    # print(c_k)
     return c_k
 
 def compute_fleiss(participant_ids):
@@ -191,39 +196,44 @@ def compute_fleiss(participant_ids):
 def create_users_groups(df):
     """
     """
-    G1 = df[df["MIXChoice"]=="Now"]
-    users_groups.append(G1.index.to_list())    
+    # G1 = df[df["MIXChoice"]=="Now"]
+    # users_groups.append(G1.index.to_list())    
 
-    G2 = df[df["MIXChoice"]=="Previous"]
-    users_groups.append(G2.index.to_list())    
+    # G2 = df[df["MIXChoice"]=="Previous"]
+    # users_groups.append(G2.index.to_list())    
 
     # Demographical Clusters
-    WEIRD1 = df[(df["Gender"]=="Male") &
-                   ((df["Origin"]=="Europe") | (df["Origin"]=="North America") | (df["Origin"]=="Oceania")) &
-                   ((df["Instruction"] != "High school degree or equivalent") | (df["Instruction"] != "Less than a high school diploma")) & 
-                   (df["SkinType"].isin(["1","2"]))]
+    # WEIRD1 = df[(df["Gender"]=="Male") &
+    #                ((df["Origin"]=="Europe") | (df["Origin"]=="North America") | (df["Origin"]=="Oceania")) &
+    #                ((df["Instruction"] != "High school degree or equivalent") | (df["Instruction"] != "Less than a high school diploma")) & 
+    #                (df["SkinType"].isin(["1","2"]))]
 
-    users_groups.append(WEIRD1.index.to_list())
+    # users_groups.append(WEIRD1.index.to_list())
     
 
-    WEIRD2 = df[((df["Origin"]=="Europe") | (df["Origin"]=="North America") | (df["Origin"]=="Oceania")) &
-                   ((df["Instruction"] != "High school degree or equivalent") | (df["Instruction"] != "Less than a high school diploma")) & 
-                   (df["SkinType"].isin(["1","2"]))]
+    # WEIRD2 = df[((df["Origin"]=="Europe") | (df["Origin"]=="North America") | (df["Origin"]=="Oceania")) &
+    #                ((df["Instruction"] != "High school degree or equivalent") | (df["Instruction"] != "Less than a high school diploma")) & 
+    #                (df["SkinType"].isin(["1","2"]))]
 
-    users_groups.append(WEIRD2.index.to_list())
+    # users_groups.append(WEIRD2.index.to_list())
     
 
-    WEIRD3 = df[((df["Origin"]=="Europe") | (df["Origin"]=="North America") | (df["Origin"]=="Oceania")) &
+    WEIRD3 = df[((df["Origin"]=="Europe") | (df["Origin"]=="North America")) &
                    ((df["Instruction"] != "High school degree or equivalent") | (df["Instruction"] != "Less than a high school diploma"))]
-
+    print(len(WEIRD3.index.to_list()))
     users_groups.append(WEIRD3.index.to_list())
-    
+
+    NOT_WEIRD = df[~df.isin(WEIRD3)].dropna()
+    users_groups.append(NOT_WEIRD.index.to_list())    
+    print(len(NOT_WEIRD.index.to_list()))
 
     YOUNG = df[df["Age"].isin(["18-24 years old","25-34 years old"])]
     users_groups.append(YOUNG.index.to_list())
+    print(len(YOUNG.index.to_list()))
 
     OLD = df[~df.isin(YOUNG)].dropna()
     users_groups.append(OLD.index.to_list())
+    print(len(OLD.index.to_list()))
 
     return users_groups
     
@@ -333,24 +343,26 @@ if __name__ == '__main__':
         # df_users_clust.iloc[np.where(clusterer.labels_==n_c)].describe(include='all').to_csv("data/Users/user_cluster_20201029_{}.csv".format(n_c))
         group = np.where(clusterer.labels_ == n_c)[0]
         users_groups.append(group)
+        print(len(group))
 
 
     # Create Pre-defined users group
     users_groups = create_users_groups(df_users)
 
     
-    ### INTER-RATER AGREEMENT ###
+    # ### INTER-RATER AGREEMENT ###
+    # for group in users_groups:
+    #     c_k = compute_cohen(group)
+    #     compute_ci(c_k, group)
+    # c_k = compute_cohen(df_users.index.to_list())
+    # compute_ci(c_k, df_users.index.to_list())
+
+
+    ### METRIC-RATER AGREEMENT ###
     for group in users_groups:
-        c_k = compute_cohen(group)
-        compute_ci(c_k, group)
-    c_k = compute_cohen(df_users.index.to_list())
-    compute_ci(c_k, df_users.index.to_list())
-
-
-    # # ### METRIC-RATER AGREEMENT ###
-    # # for group in users_groups:
-    # #     compute_cohen_metric(group, MIX_FLAG)
-    # # compute_cohen_metric(df_users.index.to_list(), MIX_FLAG)
-    
+        c_k = compute_cohen_metric(group)
+        compute_ci_metric(c_k, group)
+    c_k = compute_cohen_metric(df_users.index.to_list())
+    compute_ci_metric(c_k, df_users.index.to_list())
 
 

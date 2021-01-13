@@ -115,27 +115,31 @@ if __name__ == '__main__':
 
     # for el in [(0,1), (2,3), (5,4), (6,7)]:
     #     print((meds[el[0]] - meds[el[1]]) / meds[el[1]] *100)
-
+        
     ### Mann-Whitney-U test ###
     print("\n### Mann-Whitney-U test ###")
     print("List 1-2")
     MU = mannWhitney(dist_groups[0], dist_groups[1])
+    print(np.median(dist_groups[0]), np.median(dist_groups[1]))
     print("Significance: {}; U-statistics: {}, EffectSize: {}\n".format(
                                         MU.significance, MU.u, MU.effectsize))
 
     print("List 3-4")
     MU = mannWhitney(dist_groups[2], dist_groups[3])
+    print(np.median(dist_groups[2]), np.median(dist_groups[3]))
     print("Significance: {}; U-statistics: {}, EffectSize: {}\n".format(
                                         MU.significance, MU.u, MU.effectsize))    
     print("List 5-6")
     MU = mannWhitney(dist_groups[4], dist_groups[5])
+    print(np.median(dist_groups[4]), np.median(dist_groups[5]))
     print("Significance: {}; U-statistics: {}, EffectSize: {}\n".format(
                                         MU.significance, MU.u, MU.effectsize))    
     
     print("List 7-8")
     MU = mannWhitney(dist_groups[6], dist_groups[7])
+    print(np.median(dist_groups[6]), np.median(dist_groups[7]))
     print("Significance: {}; U-statistics: {}, EffectSize: {}\n".format(
-                                        MU.significance, MU.u, MU.effectsize))    
+                                        MU.significance, MU.u, MU.effectsize))   
 
 
 
